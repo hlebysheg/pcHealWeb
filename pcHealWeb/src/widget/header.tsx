@@ -4,7 +4,7 @@ import { Button, Menu } from "antd";
 import { useStore } from "effector-react";
 import { $isAuth, $user, logout } from "../features/login";
 import { LogoutOutlined } from "@ant-design/icons";
-
+import pcIncon from '../assets/mac-mini.png';
 const buttonLogin = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const name = useStore($user);
@@ -31,14 +31,22 @@ const buttonPcheal = () => {
   );
 };
 
+const headerIcon = () => {
+  return (
+    <div style={{display: "flex", alignItems: "center"}}><img style={{width: "30px", height: "40px"}} src={pcIncon}/></div>
+  )
+}
+
 export const Header: React.FC = () => {
   const headerButtons = [
     buttonPcheal,
     buttonLogin,
+    headerIcon
   ];
 
   return (
-    <header>
+    <header style={{display: "flex"}}>
+      
       <Menu
         theme={"light"}
         mode="horizontal"
