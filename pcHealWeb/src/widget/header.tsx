@@ -73,6 +73,3 @@ export const Header: React.FC = () => {
   );
 };
 
-function useRouteMatch() {
-  throw new Error("Function not implemented.");
-}
