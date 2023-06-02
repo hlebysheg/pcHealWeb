@@ -5,6 +5,8 @@ import { useStore } from "effector-react";
 import { $isAuth, $user, logout } from "../features/login";
 import { LogoutOutlined } from "@ant-design/icons";
 import pcIncon from '../assets/mac-mini.png';
+import { useLocation } from 'react-router-dom'
+
 const buttonLogin = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const name = useStore($user);
@@ -39,11 +41,17 @@ const headerIcon = () => {
 
 export const Header: React.FC = () => {
   const headerButtons = [
-    buttonPcheal,
-    buttonLogin,
-    headerIcon
+    {element: buttonPcheal, key: 2, path: 'pcinfo'},
+    {element: buttonLogin, key: 3, path: 'login'},
+    {element: headerIcon, key: 4, path: 'nonepath'},
   ];
-
+  const [selected, setSelected] = React.useState(["0"]);
+  const location = useLocation();
+  React.useEffect(() => {
+    const pathName = location.pathname;
+    const selectedBtn = headerButtons.filter(el => pathName.includes(el.path));
+    setSelected(selectedBtn.map(el => el.key.toString()))
+  }, [location])
   return (
     <header style={{display: "flex"}}>
       
@@ -53,14 +61,18 @@ export const Header: React.FC = () => {
         color="white"
         style={{ minWidth: 0, flex: "auto", justifyContent: "end" }}
         defaultSelectedKeys={["0"]}
-        items={headerButtons.map((el, index) => {
-          const key = index + 1;
+        selectedKeys={selected}
+        items={headerButtons.map((el) => {
           return {
-            key,
-            label: el(),
+            key: el.key,
+            label: el.element(),
           };
         })}
       />
     </header>
   );
 };
+
+function useRouteMatch() {
+  throw new Error("Function not implemented.");
+}
