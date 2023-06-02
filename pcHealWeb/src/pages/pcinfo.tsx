@@ -1,8 +1,10 @@
-import signalR, { HubConnectionBuilder } from "@microsoft/signalr";
+import  { HubConnectionBuilder } from "@microsoft/signalr";
 import { useEffect, useState } from "react";
-import { $token } from "../features/login";
+import { $isAuth, $token } from "../features/login";
 import { useStore } from "effector-react";
-import { host, host_hub } from "../const";
+import { host_hub } from "../const";
+import { Col, Row, notification } from "antd";
+
 type PCInfoMessage = {
   cpuName: string;
   cpuTemp: number;
@@ -15,6 +17,8 @@ type PCInfoMessage = {
 };
 export const PcInfoPage = () => {
   const [connection, setConnection] = useState<any>();
+  const isAuth = useStore($isAuth)
+  const [pcHeal, setPcHeal] = useState<PCInfoMessage | null>(null)
   const tokens = useStore($token);
   useEffect(() => {
     const connect = new HubConnectionBuilder()
@@ -37,10 +41,56 @@ export const PcInfoPage = () => {
     }
     connection.on("Notify", (msg: string) => {
       console.log(msg);
+      notification.warning({
+        message: "Температура превысила 100 градусов!",
+      })
     });
     connection.on("PCInfo", (info: PCInfoMessage) => {
-      console.log(info);
+      console.log(info.cpuName);
+      setPcHeal(info)
     });
   }, [connection]);
-  return <div>pcinfo</div>;
+  if(!isAuth){
+    return <Row justify={"center"}>
+    <h3>Authorize first!</h3>
+  </Row>
+  }
+  return <div style={{marginLeft: 'auto', marginRight: 'auto', width: '700px'}}>
+  <Row justify={"center"} style={{borderBottom: '1px solid black'}}>
+    <h3>CPU parameter</h3>
+  </Row>
+  <Row justify={"center"} style={{paddingTop: '2rem'}}>
+    <Col  span={6} >CPU name</Col>
+    <Col span={12} >{pcHeal?.cpuName}</Col>
+  </Row>
+  <Row justify={"center"}>
+    <Col span={6} >CPU temp</Col>
+    <Col span={12} >{pcHeal?.cpuTemp.toFixed(2) + "°C"}</Col>
+  </Row>
+  <Row justify={"center"}>
+    <Col span={6} >CPU load</Col>
+    <Col span={12} >{pcHeal?.cpuLoad.toFixed(2) + "%"}</Col>
+  </Row>
+  <Row justify={"center"}>
+    <Col span={6} >CPU frenq</Col>
+    <Col span={12} >{pcHeal?.cpuFrenq.toFixed(2)}</Col>
+  </Row>
+  {/* GRAPHIC */}
+  <Row justify={"center"} style={{borderBottom: '1px solid black'}}>
+    <h3>Graphic parameter</h3>
+  </Row>
+  
+  <Row justify={"center"} style={{paddingTop: '2rem'}}>
+    <Col span={6} >GPU name</Col>
+    <Col span={12} >{pcHeal?.gpuName}</Col>
+  </Row>
+  <Row justify={"center"}>
+    <Col span={6} >GPU load</Col>
+    <Col span={12} >{pcHeal?.gpuLoad.toFixed(2) + "%"}</Col>
+  </Row>
+  <Row justify={"center"}>
+    <Col span={6} >GPU temp</Col>
+    <Col span={12} >{pcHeal?.gpuTemp.toFixed(2) + "°C"}</Col>
+  </Row>
+</div>;
 };

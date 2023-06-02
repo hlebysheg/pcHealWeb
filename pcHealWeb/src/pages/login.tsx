@@ -1,14 +1,13 @@
-import { Button, Form, Input, notification } from "antd";
+import { Button, Form, Input } from "antd";
 import { useEffect, useState } from "react";
-import axios from 'axios';
 import { $isAuth, loginEvent } from "../features/login";
 import { useStore } from "effector-react/effector-react.mjs";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
     const [name, setName] = useState("");
     
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     
     const [password, setPassword] = useState("");
 
@@ -21,12 +20,13 @@ export const LoginPage = () => {
         setName(e.target.value);
     }
     function handleSubmit (e: React.FormEvent<HTMLElement>)  {
+        e.preventDefault()
         loginEvent({
             name: name,
             email: "",
             password: password,
         })
-      };
+      }
       useEffect(() => {
         if(auth){
             setTimeout(() => {return navigate("/pcinfo");}, 2000)

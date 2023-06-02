@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import * as React from "react";
-import { Button, Layout, Menu } from "antd";
+import { Button, Menu } from "antd";
 import { useStore } from "effector-react";
-import { $isAuth, $user } from "../features/login";
+import { $isAuth, $user, logout } from "../features/login";
+import { LogoutOutlined } from "@ant-design/icons";
 
 const buttonLogin = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const name = useStore($user);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const isAuth = useStore($isAuth); 
   if(isAuth){
-    return <div>
+    return <div onClick={() => logout()}>
     <span>{name}</span>
+    <LogoutOutlined />
   </div>
   }
   return (
@@ -29,8 +33,8 @@ const buttonPcheal = () => {
 
 export const Header: React.FC = () => {
   const headerButtons = [
-    buttonLogin,
     buttonPcheal,
+    buttonLogin,
   ];
 
   return (
@@ -39,7 +43,7 @@ export const Header: React.FC = () => {
         theme={"light"}
         mode="horizontal"
         color="white"
-        style={{ minWidth: 0, flex: "auto", justifyContent: "center" }}
+        style={{ minWidth: 0, flex: "auto", justifyContent: "end" }}
         defaultSelectedKeys={["0"]}
         items={headerButtons.map((el, index) => {
           const key = index + 1;

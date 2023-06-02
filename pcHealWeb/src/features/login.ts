@@ -4,12 +4,13 @@ import { createEffect, createEvent, createStore, sample } from "effector";
 import { host } from "../const";
 
 export const loginEvent = createEvent<LoginInfo>();
-export const $isAuth = createStore(false)
-export const $user = createStore("")
+export const logout = createEvent();
+export const $isAuth = createStore(false).reset(logout)
+export const $user = createStore("").reset(logout)
 export const $token = createStore({
     accesToken: "",
     refreshToken: "",
-})
+}).reset(logout)
 export type LoginInfo = {
     password: string,
     name: string,
