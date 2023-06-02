@@ -1,4 +1,4 @@
-import { notification } from "antd";
+import { message, notification } from "antd";
 import axios from "axios";
 import { createEffect, createEvent, createStore, sample } from "effector";
 import { host } from "../const";
@@ -48,3 +48,11 @@ sample({
 })
 
 $user.on(loginEvent, (_,val) => val.name)
+
+loginEvent.watch(el => {
+    message.open({
+        type: 'loading',
+        content: 'Action in progress..',
+        duration: 2,
+      });
+})
