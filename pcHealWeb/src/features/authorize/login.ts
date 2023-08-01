@@ -1,7 +1,7 @@
 import { message, notification } from "antd";
 import axios from "axios";
 import { createEffect, createEvent, createStore, sample } from "effector";
-import { host } from "../const";
+import { host } from "../../const";
 
 export const loginEvent = createEvent<LoginInfo>();
 export const logout = createEvent();

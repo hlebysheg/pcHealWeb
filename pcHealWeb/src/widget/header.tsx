@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import * as React from "react";
 import { Button, Menu, Popconfirm } from "antd";
 import { useStore } from "effector-react";
-import { $isAuth, $user, logout } from "../features/login";
+import { $isAuth, $user, logout } from "../features/authorize/login";
 import { LogoutOutlined } from "@ant-design/icons";
 import pcIncon from "../assets/mac-mini.png";
 import { useLocation } from "react-router-dom";

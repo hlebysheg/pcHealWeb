@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Input, Row } from "antd";
 import { useEffect, useState } from "react";
-import { $isAuth, loginEvent } from "../features/login";
+import { $isAuth, loginEvent } from "../features/authorize/login";
 import { useStore } from "effector-react/effector-react.mjs";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +12,6 @@ export const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   const auth = useStore($isAuth);
-
   function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
     setPassword(e.target.value);
   }

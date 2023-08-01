@@ -1,6 +1,6 @@
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { useEffect, useState } from "react";
-import { $isAuth, $token } from "../features/login";
+import { $isAuth, $token } from "../features/authorize/login";
 import { useStore } from "effector-react";
 import { host_hub } from "../const";
 import { Col, Row, notification } from "antd";
@@ -21,6 +21,7 @@ export const PcInfoPage = () => {
   const isAuth = useStore($isAuth);
   const [pcHeal, setPcHeal] = useState<PCInfoMessage | null>(null);
   const tokens = useStore($token);
+  
   useEffect(() => {
     const connect = new HubConnectionBuilder()
       .withUrl(host_hub + "/api/pchealh/hub", {
